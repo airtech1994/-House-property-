@@ -1,14 +1,14 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import mpl_toolkits.axisartist.axislines as axislines
-def CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times):
+def CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times_start):
     print("-------------begin----------------------")
     print("----------------------------------------")
     print("housing loan is          ",housing_loan)
     print("housing loan payback years",payback_years)
     print("payback method is        ",repayment_method)
     print("LPR change forme ",lpr_start," to ",lpr_end)
-    print("inflation rate times is",inflation_rate_times)
+    print("inflation rate times by LPR is",inflation_rate_times_start)
     print("-------------result----------------------")
     monthly_payback=0
     monthly_pay_principal=0
@@ -20,7 +20,8 @@ def CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback
     ## 
     total_payedback=0
     ##
-    inflation_rate          =lpr_now*inflation_rate_times
+    inflation_rate          =(lpr_now*inflation_rate_times_start)
+    k=inflation_rate*lpr_now
     infaltion_multiplicative_multiplication=1 
     total_conversion_back   =0
     ## plot
@@ -51,7 +52,7 @@ def CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback
             ##
             total_payedback = total_payedback + monthly_payback
             ##
-            inflation_rate  =lpr_now*inflation_rate_times
+            inflation_rate  =k/lpr_now
             infaltion_multiplicative_multiplication=infaltion_multiplicative_multiplication*(inflation_rate+1)
             total_conversion_back = total_conversion_back + monthly_payback/infaltion_multiplicative_multiplication
             ##
@@ -80,7 +81,7 @@ lpr_end     =4.75/100
 #repayment_method="equality_corpus_and_interest"
 repayment_method="equality_corpus"
 payback_years=30
-inflation_rate_times=4
+inflation_rate_times_start=4
 
 fig=plt.figure(1,figsize=(18,6))
 fig.subplots_adjust(bottom=0.2)
@@ -95,11 +96,11 @@ ax1.axis["left"].label.set_text("money")  # 显示在左边
 ax2.axis["left"].label.set_text("money")  # 显示在左边
 ax3.axis["left"].label.set_text("money")  # 显示在左边
 ax1.axis["bottom"].label.set_text("months")
-ax2.axis["bottom"].label.set_text("months\n"+"inflation_rate LPR*="+str(inflation_rate_times))
+ax2.axis["bottom"].label.set_text("months\n"+"inflation_rate LPR*="+str(inflation_rate_times_start))
 ax3.axis["bottom"].label.set_text("months")
 
 
-x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times)
+x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times_start)
 ax1.plot(x,array_monthly_pay_principal,label="monthly_principal")#,x,array_monthly_pay_Interest,'g',label="月供利息",x,array_monthly_payback,'b',x,array_conversion_back,'y') 
 ax1.plot(x,array_monthly_pay_Interest,label="monthly_interest")
 ax1.plot(x,array_monthly_payback,label="monthly_payback")
@@ -107,14 +108,14 @@ ax1.plot(x,array_conversion_back,label="monthly_convertion")
 
 
 lpr_end     =0.5/100
-x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times)
+x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times_start)
 ax2.plot(x,array_monthly_pay_principal,label="monthly_principal")#,x,array_monthly_pay_Interest,'g',label="月供利息",x,array_monthly_payback,'b',x,array_conversion_back,'y') 
 ax2.plot(x,array_monthly_pay_Interest,label="monthly_interest")
 ax2.plot(x,array_monthly_payback,label="monthly_payback")
 ax2.plot(x,array_conversion_back,label="monthly_convertion")
 
 lpr_end     =8/100
-x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times)
+x,array_monthly_pay_principal,array_monthly_pay_Interest,array_monthly_payback,array_conversion_back=CalculateHousingLoan(housing_loan,lpr_start,lpr_end,repayment_method,payback_years,inflation_rate_times_start)
 ax3.plot(x,array_monthly_pay_principal,label="monthly_principal")#,x,array_monthly_pay_Interest,'g',label="月供利息",x,array_monthly_payback,'b',x,array_conversion_back,'y') 
 ax3.plot(x,array_monthly_pay_Interest,label="monthly_interest")
 ax3.plot(x,array_monthly_payback,label="monthly_payback")
